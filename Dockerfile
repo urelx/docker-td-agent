@@ -5,9 +5,9 @@ RUN yum update -y
 
 ADD td.repo /etc/yum.repos.d/
 RUN yum install -y td-agent
+RUN echo "include /conf.d/*.conf" > /etc/td-agent/td-agent.conf
 
-ADD td-agent.conf /etc/td-agent/
-
+VOLUME ["/conf.d", "/data"]
 EXPOSE 24224/tcp 24224/udp
 
 ENTRYPOINT ["td-agent"]
