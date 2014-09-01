@@ -1,4 +1,4 @@
-FROM centos
+FROM centos:centos6
 MAINTAINER Yuu Yamanaka <yuu@relx.jp>
 
 RUN yum update -y
