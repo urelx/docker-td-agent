@@ -17,8 +17,13 @@ RUN apt-get update -y
 # Install td-agent
 RUN apt-get install -y td-agent
 
+# Install elasticsearch plugin and dependancies 
+RUN apt-get install -y libcurl4-gnutls-dev
+RUN apt-get install -y  build-essential
+RUN /usr/sbin/td-agent-gem install fluent-plugin-elasticsearch
+
 # Install td-agent config
-ADD td-agent.conf /etc/td-agent/td-agent.conf
+#ADD td-agent.conf /etc/td-agent/td-agent.conf
 
 # Set volume for log location(s) via command line
 
