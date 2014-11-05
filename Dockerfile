@@ -1,19 +1,30 @@
-FROM centos:centos6
-MAINTAINER Yuu Yamanaka <yuu@relx.jp>
+FROM ubuntu:14.04
+MAINTAINER EventMobi Platform Team <platform@eventmobi.com>
 
-RUN yum update -y
+# Update to fetch deb sources
+RUN apt-get update -y
 
-ADD td.repo /etc/yum.repos.d/
-RUN yum install -y td-agent
-RUN echo "include /conf.d/*.conf" > /etc/td-agent/td-agent.conf
+# Install curl
+RUN apt-get install -y curl
 
-RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-file-alternative
-RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-forest
-RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-tail-asis
-RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-multiprocess
+# Install GPG key and add td-agent deb source
+RUN curl http://packages.treasuredata.com/GPG-KEY-td-agent | apt-key add -
+RUN echo "deb [arch=amd64] http://packages.treasuredata.com/2/ubuntu/trusty/ trusty contrib" > /etc/apt/sources.list.d/treasure-data.list
 
-VOLUME ["/conf.d", "/data"]
-EXPOSE 24224/tcp 24224/udp
+# Update deb source listing
+RUN apt-get update -y
 
-ENTRYPOINT ["td-agent"]
+# Install td-agent
+RUN apt-get install -y td-agent
+
+# Install elasticsearch plugin and dependancies 
+RUN apt-get install -y libcurl4-gnutls-dev
+RUN apt-get install -y  build-essential
+RUN /usr/sbin/td-agent-gem install fluent-plugin-elasticsearch
+
+# Install td-agent config
+#ADD td-agent.conf /etc/td-agent/td-agent.conf
+
+# Set volume for log location(s) via command line
+
+CMD ["service", "td-agent", "start"]
