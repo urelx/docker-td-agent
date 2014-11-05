@@ -11,7 +11,7 @@ RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-file-alternative
 RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-forest
 RUN /usr/lib64/fluent/ruby/bin/gem install fluent-plugin-tail-asis
-RUN /usr/lib64/fluent/ruby/bin/fluent-gem install fluent-plugin-elasticsearch
+
 
 VOLUME ["/conf.d", "/data"]
 EXPOSE 24224/tcp 24224/udp
