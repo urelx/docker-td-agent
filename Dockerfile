@@ -1,5 +1,5 @@
 FROM centos:centos6
-MAINTAINER Yuu Yamanaka <yuu@relx.jp>
+MAINTAINER Yuu Yamanaka <yuu@relx.jp> & reza <reza@eventmobi.com>
 
 RUN yum update -y
 
